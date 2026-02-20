@@ -1,12 +1,43 @@
-version: '3.8'
 services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - rishi_db_data:/var/lib/postgresql/data
+    networks:
+      - rishi_net
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   app:
     build: .
-    ports:
-      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - rishi_net
+    restart: on-failure
+
   web:
-    image: nginx:alpine
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
-      - ./index.html:/usr/share/nginx/html/index.html
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - rishi_net
+    restart: always
+
+networks:
+  rishi_net:
+    driver: bridge
+
+volumes:
+  rishi_db_data:
