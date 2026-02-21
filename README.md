@@ -113,8 +113,10 @@ Explanation: If a container exceeds host memory limits, the Linux Kernel's OOM K
 Bash
 # Clean start
 docker compose down
+<br>
 docker compose up -d --build
 
 # Verify Connectivity
 docker compose ps
+<br>
 App URL: http://localhost 🌍
