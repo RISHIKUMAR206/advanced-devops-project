@@ -1,5 +1,4 @@
 🚀 Advanced DevOps Project Report: Rishabhmeta Deployment
-
 (Implementation: Part 1 to Part 6)
 This report documents the serial execution of the multi-container project. Each part includes the commands used and a short explanation of the results.
 
@@ -107,4 +106,5 @@ docker compose ps
 
 # Live Logs
 docker compose logs -f --tail=50
+<br>
 App URL: http://localhost 🌍
